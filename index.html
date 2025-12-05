@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Tarjeta de Navidad</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1e293b 0%, #020617 55%, #000 100%);
+      overflow: hidden;
+      color: #f9fafb;
+    }
+
+    /* Fondo de estrellas suaves */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(2px 2px at 20% 20%, rgba(255,255,255,0.4), transparent),
+        radial-gradient(2px 2px at 80% 30%, rgba(255,255,255,0.4), transparent),
+        radial-gradient(1.5px 1.5px at 60% 70%, rgba(255,255,255,0.3), transparent),
+        radial-gradient(2px 2px at 30% 80%, rgba(255,255,255,0.4), transparent);
+      opacity: 0.4;
+      pointer-events: none;
+      z-index: -2;
+    }
+
+    /* Contenedor principal */
+    .card-wrapper {
+      position: relative;
+      width: min(420px, 95vw);
+      padding: 16px;
+    }
+
+    /* Luces alrededor de la tarjeta */
+    .lights {
+      position: absolute;
+      inset: 0;
+      border-radius: 22px;
+      padding: 4px;
+      background:
+        radial-gradient(circle at 10% 0%, #f97316 0 4px, transparent 4px),
+        radial-gradient(circle at 90% 0%, #22d3ee 0 4px, transparent 4px),
+        radial-gradient(circle at 0% 50%, #facc15 0 4px, transparent 4px),
+        radial-gradient(circle at 100% 50%, #22c55e 0 4px, transparent 4px),
+        radial-gradient(circle at 10% 100%, #e11d48 0 4px, transparent 4px),
+        radial-gradient(circle at 90% 100%, #a855f7 0 4px, transparent 4px);
+      filter: blur(0.2px);
+      animation: blink 2.4s infinite alternate;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    @keyframes blink {
+      0%   { opacity: 0.4; }
+      50%  { opacity: 1; }
+      100% { opacity: 0.6; }
+    }
+
+    /* Tarjeta */
+    .card {
+      background: linear-gradient(145deg, #020617, #111827);
+      border-radius: 18px;
+      padding: 28px 24px 24px;
+      box-shadow:
+        0 16px 35px rgba(15, 23, 42, 0.9),
+        0 0 0 1px rgba(148, 163, 184, 0.07);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Brillo suave dentro de la tarjeta */
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(96,165,250,0.12) 0, transparent 45%),
+        radial-gradient(circle at 90% 100%, rgba(244,114,182,0.12) 0, transparent 50%);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .card-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* 🌲 Árbol corregido */
+    .tree {
+      width: 100px;
+      height: 150px;
+      margin: 0 auto 20px;
+      position: relative;
+    }
+
+    .tree-part {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 50px solid transparent;
+      border-right: 50px solid transparent;
+      border-bottom: 45px solid #22c55e;
+      filter: drop-shadow(0 0 10px rgba(34,197,94,0.6));
+    }
+
+    .tree-part:nth-child(1) { 
+      top: 10px; 
+      border-bottom-color: #16a34a;
+    }
+    .tree-part:nth-child(2) { 
+      top: 40px;
+      border-bottom-color: #22c55e;
+    }
+    .tree-part:nth-child(3) { 
+      top: 70px; 
+      border-bottom-color: #4ade80;
+    }
+
+    .tree-trunk {
+      position: absolute;
+      bottom: 0px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 22px;
+      height: 32px;
+      background: #8b4513;
+      border-radius: 4px;
+    }
+
+    .star {
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%) rotate(10deg);
+      width: 26px;
+      height: 26px;
+      background: radial-gradient(circle at 30% 0%, #fef9c3, #facc15);
+      clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+      box-shadow: 0 0 18px rgba(250, 204, 21, 0.9);
+      animation: starPulse 1.5s infinite;
+    }
+
+    @keyframes starPulse {
+      0%   { transform: translateX(-50%) scale(1) rotate(10deg); opacity: 0.9; }
+      50%  { transform: translateX(-50%) scale(1.15) rotate(10deg); opacity: 1; }
+      100% { transform: translateX(-50%) scale(1) rotate(10deg); opacity: 0.9; }
+    }
+
+    /* Texto principal */
+    .title {
+      text-align: center;
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #e5e7eb;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 0.9rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: #38bdf8;
+      margin-bottom: 18px;
+    }
+
+    .message {
+      text-align: center;
+      font-size: 0.98rem;
+      line-height: 1.6;
+      color: #cbd5f5;
+      margin-bottom: 20px;
+    }
+
+    .signature {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #e5e7eb;
+      opacity: 0.9;
+    }
+
+    /* Botón */
+    .btn-row {
+      display: flex;
+      justify-content: center;
+      margin-top: 18px;
+    }
+
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 9px 18px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      background: linear-gradient(135deg, #22c55e, #22d3ee);
+      color: #020617;
+      box-shadow: 0 10px 25px rgba(8, 47, 73, 0.7);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px) scale(1.02);
+      box-shadow: 0 14px 30px rgba(8, 47, 73, 0.85);
+      filter: brightness(1.05);
+    }
+
+    button:active {
+      transform: translateY(0) scale(0.98);
+      box-shadow: 0 8px 18px rgba(8, 47, 73, 0.7);
+      filter: brightness(0.98);
+    }
+
+    /* ❄️ Nieve */
+    .snowflake {
+      position: fixed;
+      top: -10px;
+      color: #e5f2ff;
+      font-size: 10px;
+      pointer-events: none;
+      z-index: -1;
+      opacity: 0.8;
+      filter: drop-shadow(0 0 6px rgba(191, 219, 254, 0.9));
+      animation-name: fall;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+    }
+
+    @keyframes fall {
+      0% { transform: translate3d(var(--x-start), -10px, 0) rotate(0deg); }
+      100% { transform: translate3d(var(--x-end), 110vh, 0) rotate(360deg); }
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <div class="card-wrapper">
+    <div class="lights"></div>
+    <div class="card">
+      <div class="card-inner">
+
+        <!-- 🌲 Árbol corregido -->
+        <div class="tree">
+          <div class="star"></div>
+          <div class="tree-part"></div>
+          <div class="tree-part"></div>
+          <div class="tree-part"></div>
+          <div class="tree-trunk"></div>
+        </div>
+
+        <h1 class="title">¡Feliz Navidad!</h1>
+        <p class="subtitle">Edición Especial</p>
+
+        <p class="message" id="mensaje">
+          Que esta Navidad esté llena de luz, paz y momentos inolvidables junto
+          a las personas que más quieres. 🎄✨
+        </p>
+
+        <p class="signature">Con cariño, <strong>Tu Nombre</strong></p>
+
+        <div class="btn-row">
+          <button id="btnCambiar">Cambiar mensaje</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ❄️ Nieve animada
+    function crearCopo() {
+      const copo = document.createElement("div");
+      copo.className = "snowflake";
+      copo.textContent = "❄";
+
+      const startX = Math.random() * 100;
+      const endX = startX + (Math.random() * 20 - 10);
+      const duracion = 8 + Math.random() * 7;
+
+      copo.style.left = startX + "vw";
+      copo.style.setProperty("--x-start", "0vw");
+      copo.style.setProperty("--x-end", endX - startX + "vw");
+      copo.style.animationDuration = duracion + "s";
+      copo.style.fontSize = 8 + Math.random() * 10 + "px";
+
+      document.body.appendChild(copo);
+      setTimeout(() => copo.remove(), duracion * 1000);
+    }
+
+    setInterval(crearCopo, 350);
+
+    // Cambiar mensaje
+    const mensajes = [
+      "Que la magia de esta Navidad llene tu vida de música, risas y buenos recuerdos. 🎅✨",
+      "Que cada luz en tu árbol te recuerde un sueño por cumplir. ¡Felices fiestas! 🌟",
+      "Brindo por una Navidad llena de esperanza y un Año Nuevo increíble para ti. 🎁💫",
+      "Gracias por ser parte de mi vida. Te deseo una Navidad preciosa y un 2025 espectacular. ❤️"
+    ];
+
+    const mensajeEl = document.getElementById("mensaje");
+    const btnCambiar = document.getElementById("btnCambiar");
+    let indice = 0;
+
+    btnCambiar.addEventListener("click", () => {
+      indice = (indice + 1) % mensajes.length;
+      mensajeEl.textContent = mensajes[indice];
+    });
+
+  </script>
+
+</body>
+</html>
